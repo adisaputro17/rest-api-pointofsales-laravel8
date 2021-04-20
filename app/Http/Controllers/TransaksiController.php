@@ -30,6 +30,7 @@ class TransaksiController extends Controller
         }
         
         $transaksi = new Transaksi();
+        $transaksi->user_id = $request->user_id;
         $transaksi->total_item = $total_item;
         $transaksi->total_harga = $total_harga;
         $transaksi->save();
@@ -51,6 +52,7 @@ class TransaksiController extends Controller
         return response([
             "message" => 'transaksi berhasil dilakukan',
             "transaksi_id" => $transaksi->id,
+            "user_id" => $transaksi->user_id,
             "total_item" => $transaksi->total_item,
             "total_harga" => $transaksi->total_harga
         ]);
@@ -60,6 +62,7 @@ class TransaksiController extends Controller
         $transaksis = Transaksi::all();
 
         foreach($transaksis as $transaksi){
+            $transaksi->user;
             $details = $transaksi->details;
             foreach($details as $detail){
                 $detail->product;
@@ -70,7 +73,7 @@ class TransaksiController extends Controller
     }
 
     public function show($id){
-        $transaksi = Transaksi::with('details')->get()->find($id);
+        $transaksi = Transaksi::with('user','details')->get()->find($id);
         foreach($transaksi->details as $detail){
             $detail->product;
         }
